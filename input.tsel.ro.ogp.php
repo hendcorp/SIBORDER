@@ -87,7 +87,7 @@ if(isset($_POST['submit']))
                                         TO_DATE('".$_POST['est_oa']."','DD/MM/YYYY'),
                                         '".$_POST['komentar']."',
                                         '".$_SESSION['username']."',
-                                        '".  strtoupper(date("d-M-y"))."'
+                                        TO_DATE('".date("d/m/Y")."','DD/MM/YYYY')
                                 )";
         $result = oci_parse($connect, $sql);
         oci_execute($result);

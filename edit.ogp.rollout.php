@@ -52,6 +52,10 @@ else if($_SESSION['privilege']=='guest')
                 $("#est_oa").show();
                 $("#tgl_oa").hide();
             }
+            
+            var flag = <?php echo $_GET['flag']; ?>;
+            if(flag!=1)$("#error").show();
+            
             $(".target").change(function(){
                 if(document.getElementById("status").value=="On Air"){
                     $("#est_oa").hide();
@@ -64,12 +68,12 @@ else if($_SESSION['privilege']=='guest')
             });
             $("#update-data").click(function(){
                 if($("#est_oa").css("display")!="hidden" && document.getElementById("datetimepicker1").value==""){
-                    $("#error").show();
+                    var update = "edit.ogp.rollout.process.php?siteid=<?php echo $_GET['siteid']; ?>&witel=<?php echo $_GET['witel']; ?>&jenis=<?php echo $_GET['jenis']; ?>&flag=0";           
                 }
                 else{
-                    var update = "edit.ogp.rollout.process.php?siteid=<?php echo $_GET['siteid']; ?>&witel=<?php echo $_GET['witel']; ?>&jenis=<?php echo $_GET['jenis']; ?>";
-                    document.getElementById("form-update").action = update;
+                    var update = "edit.ogp.rollout.process.php?siteid=<?php echo $_GET['siteid']; ?>&witel=<?php echo $_GET['witel']; ?>&jenis=<?php echo $_GET['jenis']; ?>&flag=1";
                 }
+                document.getElementById("form-update").action = update;
             });
         });
     </script>

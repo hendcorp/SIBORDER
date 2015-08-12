@@ -29,6 +29,11 @@ if(empty($_SESSION['privilege']))
     <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
     <script>
         $(document).ready(function (){
+            var privilege = <?php echo $_SESSION['privilege'] ?>;
+            
+            if(privilege!=0){
+                $(".delete-data").hide();
+            }
             $(".data").hide();
             $("#confirmation").hide();
             
@@ -96,8 +101,8 @@ else if($_GET['jenis']=='ogp')
 
 $sql = OCIParse($connect,
         "SELECT WITEL, SITE_ID, SITE_NAME, ALAMAT,LONGITUDE,LATITUDE, TARGET, TP, PLAN_DEPLOYMENT, "
-        . "PROGRESS, REVENUE, EST_OA, KOMENTAR,PRIORITY,TGL_OA FROM SB_OGP_RO WHERE".$qwitel."AND".$qjenis
-        ."ORDER BY SITE_ID");
+        . "PROGRESS, REVENUE, EST_OA, KOMENTAR,PRIORITY,TGL_OA,LAST_UPDATER,TGL_LAST_UPDATE FROM SB_OGP_RO WHERE".$qwitel."AND".$qjenis
+        ."ORDER BY TGL_LAST_UPDATE DESC");
 ociexecute($sql);
 ?>
   <div class="container">
@@ -133,9 +138,9 @@ ociexecute($sql);
   <tr>
     <?php if($_SESSION['privilege']!='guest') { ?>
     <td align="center">
-        <a href="edit.ogp.rollout.php?siteid=<?php echo $row[1];?>&jenis=<?php echo $_GET['jenis']; ?>&witel=<?php echo $_GET['witel'] ?>" style="text-decoration:none"><font color="#E12E32"><i class="fa fa-pencil"></i></font></a>
+        <a href="edit.ogp.rollout.php?siteid=<?php echo $row[1];?>&jenis=<?php echo $_GET['jenis']; ?>&witel=<?php echo $_GET['witel'] ?>&flag=1" style="text-decoration:none"><font color="#E12E32"><i class="fa fa-pencil"></i></font></a>
         <a href="#" style="text-decoration:none" id="but-<?php echo $row[1]; ?>"><font color="#E12E32"><i class="fa fa-eye"></i></font></a>
-        <br><a href="#" style="text-decoration:none" id="del-<?php echo $row[1]; ?>"><font color="#E12E32"><i class="fa fa-remove"></i></font></a>
+        <br><a href="#" style="text-decoration:none" id="del-<?php echo $row[1]; ?>" class="delete-data"><font color="#E12E32"><i class="fa fa-remove"></i></font></a>
     </td>
     <?php } ?>
     <script>
@@ -254,6 +259,16 @@ while($row = oci_fetch_array($sql)) { ?>
       <td width="30%"><strong>TANGGAL ON AIR</strong></td>
       <td width="1%">:</td>
       <td><?php echo $row[14]; ?></td>
+    </tr>
+    <tr>
+      <td width="30%"><strong>UPDATE TERAKHIR</strong></td>
+      <td width="1%">:</td>
+      <td><?php echo $row[15]; ?></td>
+    </tr>
+    <tr>
+      <td width="30%"><strong>TGL UPDATE TERAKHIR</strong></td>
+      <td width="1%">:</td>
+      <td><?php echo $row[16]; ?></td>
     </tr>
     <tr>
       <td width="30%"><strong>KOMENTAR</strong></td>
